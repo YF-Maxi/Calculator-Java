@@ -13,6 +13,7 @@ class UI
     double value1;
     double value2;
     double ans;
+    int timesToCalculate = 100;
 
     public void Run() throws IOException
     {
@@ -84,8 +85,21 @@ class UI
         }
         else
         {
-            ans = calculator.Calculate(value1, value2, operator);
+            double totalTime = 0;
+
+            for (int i = 0; i < timesToCalculate; i++)
+            {
+                long startTime = System.nanoTime();
+                ans = calculator.Calculate(value1, value2, operator);
+                long endTime = System.nanoTime();
+
+                double duration = (endTime - startTime) / 1_000_000_000.0; // Calculate duration
+                totalTime += duration;
+            }
+            
+            double averageTime = totalTime / timesToCalculate;
             System.out.print(value1 + " " + operator + " " + value2 + " = " + ans + "\n");
+            System.out.println("\nPerformed operation " + timesToCalculate + " times. Average time: " + averageTime + " seconds (" + averageTime * 1000 + " milliseconds).");
         }
 
         // Just waits for the user to press a key before continuing
